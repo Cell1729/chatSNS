@@ -40,7 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'chat',
     'users',
+    'channels',
 ]
+
+ASGI_APPLICATION = 'chat_sns.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -118,16 +127,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# 静的ファイルのURL
+# 静的ファイルの設定
 STATIC_URL = '/static/'
-
-# 静的ファイルのディレクトリ
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR, "static"),
 ]
-
-# 静的ファイルの収集先ディレクトリ
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
