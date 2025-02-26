@@ -1,32 +1,35 @@
+<!-- filepath: /c:/Users/sabax/source/repos/chatSNS/users/templates/users/signup.html -->
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>登録</title>
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'users/css/login_style.css' %}">
-    </head>
-    <body>
-        <div class="login-container">
-            <h2>登録</h2>
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">ユーザー名:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">パスワード:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">登録</button>
-                {% if error %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endif %}
-            </form>
-            <div class="login-link">
-                <p><a href="{% url 'login' %}">ログイン</a></p>
+<head>
+    <title>Sign Up</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/style.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
             </div>
-        </div>
-    </body>
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+</body>
 </html>
