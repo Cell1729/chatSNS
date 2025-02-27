@@ -1,5 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.contrib.auth.models import User
+from asgiref.sync import sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -25,6 +27,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         username = self.scope["user"].username
+
+        # Save message to database
+        user = await sync_to_async(User.objects.get)(username=username)
+        # データベースにメッセージを保存する。
+        # djangoの設定が全て読み込めている状態でデータベースにアクセスし、エラーを避ける
+        from .models import Message
+        await sync_to_async(Message.objects.create)(user=user, content=message)
 
         # Send message to room group
         await self.channel_layer.group_send(

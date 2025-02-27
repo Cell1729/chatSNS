@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h5$&v%8-^#xv@rjw$^-9qgo+e5wl53=c%hu0f!yi7mwaytk3d9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,6 +48,9 @@ ASGI_APPLICATION = 'chat_sns.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+    'CONFIG': {
+        'hosts': ['*'],
     },
 }
 
