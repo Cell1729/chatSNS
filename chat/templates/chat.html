@@ -15,12 +15,16 @@
                 </div>
             {% endfor %}
         </div>
-        <form id="chat-form">
+        <form id="chat-form" required>
             {% csrf_token %}
             <textarea id="chat-message-input" name="message" rows="3" placeholder="Type your message here..."></textarea>
             <button type="submit">Send</button>
         </form>
     </div>
+    <form id="logout-form" action="{% url 'logout' %}" method="post" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
     <script>
         const chatSocket = new WebSocket(
             'ws://' + window.location.host + '/ws/chat/'
@@ -28,7 +32,9 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').innerHTML += ('<div class="message"><strong>' + data.username + ':</strong> ' + data.message + '</div>');
+            const chatLog = document.querySelector('#chat-log');
+            chatLog.innerHTML += ('<div class="message"><strong>' + data.username + ':</strong> ' + data.message + '</div>');
+            chatLog.scrollTop = chatLog.scrollHeight;
         };
 
         chatSocket.onclose = function(e) {
@@ -38,11 +44,19 @@
         document.querySelector('#chat-form').onsubmit = function(e) {
             e.preventDefault();
             const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
+            const message = messageInputDom.value.trim();
+            if (message) {
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                messageInputDom.value = '';
+            }
+        };
+
+        // ページ読み込み時に自動スクロール
+        window.onload = function() {
+            const chatLog = document.querySelector('#chat-log');
+            chatLog.scrollTop = chatLog.scrollHeight;
         };
     </script>
 </body>
