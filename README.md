@@ -30,3 +30,22 @@ uvicorn chatSNS.asgi:application --host 127.0.0.1 --port 8000
 ```sh
 uvicorn chatSNS.asgi:application --reload
 ```
+
+## ローカルホストで起動
+
+```settings.py```に下記を記述
+
+```python
+LOCAL_IP = #ローカルIPアドレス
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', LOCAL_IP]
+```
+
+```sh
+uvicorn chatSNS.asgi:application --host 0.0.0.0 --port 8000
+```
+
+URLにアクセスする
+
+```sh
+http://IPアドレス/
+```
